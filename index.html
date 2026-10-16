@@ -4,14 +4,30 @@
   <meta charset="UTF-8">
   <title>Interactive 3D Solar System</title>
   <style>
-    body { margin: 0; overflow: hidden; background: #000; }
+    body {
+      margin: 0; overflow: hidden; background: #000;
+      #label {
+        position: fixed;
+        display: none;
+        padding: 4px 10px;
+        background: rgba(0, 0, 0, 0.75);
+        color: #fff;
+        font-family: sans-serif;
+        font-size: 14px;
+        border: 1px solid #888;
+        border-radius: 4px;
+        pointer-events: none;
+      }
+    }
   </style>
 </head>
 <body>
+  <div id="label"></div>
   <script type="importmap">
     {
       "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
       }
     }
   </script>
