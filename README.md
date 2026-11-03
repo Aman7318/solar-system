@@ -59,6 +59,16 @@ solar-system/
 └── textures/     planet and Sun texture images
 ```
 
+## Use of AI
+
+AI assistants (Claude and ChatGPT) are used as support tools in this project:
+
+- **Documentation:** helping write and structure documentation such as this README. ChatGPT is also used to add and format content on the project wiki page.
+- **Unfamiliar parts:** helping with specific parts of the code that I am not sure how to implement.
+- **Consistency:** in some places, keeping the code structure consistent so it is easier to extend in later milestones.
+
+Every change is run and tested in the browser, and I adjust the results as needed, for example the planet spacing, the size of Saturn's rings and the hover labels.
+
 ## Credits
 
 Planet and Sun textures are from [Solar System Scope](https://www.solarsystemscope.com/textures/) and are licensed under [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/). The moons of Jupiter and Saturn use plain colors approximating their real appearance.
