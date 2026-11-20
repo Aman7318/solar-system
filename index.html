@@ -18,11 +18,45 @@
         border-radius: 4px;
         pointer-events: none;
       }
+      #info {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 240px;
+        padding: 14px 18px;
+        background: rgba(0, 0, 0, 0.75);
+        color: #fff;
+        font-family: sans-serif;
+        font-size: 14px;
+        border: 1px solid #888;
+        border-radius: 6px;
+        display: none;
+      }
+      #info h2 { margin: 0 0 10px; font-size: 20px; }
+      #info p { margin: 6px 0; }
+
+      #info button {
+        margin-top: 8px;
+        padding: 4px 12px;
+        background: #222;
+        color: #fff;
+        border: 1px solid #888;
+        border-radius: 4px;
+        cursor: pointer;
+      }
     }
   </style>
 </head>
 <body>
   <div id="label"></div>
+  <div id="info">
+    <h2 id="info-name"></h2>
+    <p>Diameter: <span id="info-diameter"></span></p>
+    <p>Distance from Sun: <span id="info-distance"></span></p>
+    <p>Orbital period: <span id="info-period"></span></p>
+    <p>Moons: <span id="info-moons"></span></p>
+    <button id="info-close">Close</button>
+  </div>
   <script type="importmap">
     {
       "imports": {

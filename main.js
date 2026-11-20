@@ -130,22 +130,71 @@ controls.enableDamping = true;  // smooth, gliding movement
 controls.minDistance = 8;       // can't zoom closer than this
 controls.maxDistance = 120;     // can't zoom farther than this
 
+const planetInfo = {
+  Mercury: { diameter: '4,879 km',   distance: '57.9 million km',  period: '88 days',     moons: 0 },
+  Venus:   { diameter: '12,104 km',  distance: '108.2 million km', period: '225 days',    moons: 0 },
+  Earth:   { diameter: '12,742 km',  distance: '149.6 million km', period: '365.25 days', moons: 1 },
+  Mars:    { diameter: '6,779 km',   distance: '227.9 million km', period: '687 days',    moons: 2 },
+  Jupiter: { diameter: '139,820 km', distance: '778.5 million km', period: '11.9 years',  moons: 115 },
+  Saturn:  { diameter: '116,460 km', distance: '1,434 million km', period: '29.4 years',  moons: 293 },
+  Uranus:  { diameter: '50,724 km',  distance: '2,871 million km', period: '84 years',    moons: 29 },
+  Neptune: { diameter: '49,244 km',  distance: '4,495 million km', period: '164.8 years', moons: 16 }
+};
+
+const infoPanel = document.getElementById('info');
+
+function updateInfo() {
+  if (!selectedPlanet) {
+    infoPanel.style.display = 'none';
+    return;
+  }
+
+  const info = planetInfo[selectedPlanet.name];
+  document.getElementById('info-name').textContent = selectedPlanet.name;
+  document.getElementById('info-diameter').textContent = info.diameter;
+  document.getElementById('info-distance').textContent = info.distance;
+  document.getElementById('info-period').textContent = info.period;
+  document.getElementById('info-moons').textContent = info.moons;
+  infoPanel.style.display = 'block';
+}
+
 // Hover labels
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 const label = document.getElementById('label');
 const planetMeshes = planets.map((p) => p.mesh);
 
-window.addEventListener('mousemove', (event) => {
-  // Convert the mouse position to the range -1 to +1 that Three.js expects
+let selectedPlanet = null;
+let downX = 0;
+let downY = 0;
+
+const highlight = new THREE.Mesh(
+  new THREE.SphereGeometry(1, 32, 32),
+  new THREE.MeshBasicMaterial({
+    color: 0x66ccff,
+    side: THREE.BackSide,
+    transparent: true,
+    opacity: 0.4
+  })
+);
+highlight.visible = false;
+scene.add(highlight);
+
+function planetAt(event) {
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
   raycaster.setFromCamera(mouse, camera);
   const hits = raycaster.intersectObjects(planetMeshes);
+  if (hits.length === 0) return null;
 
-  if (hits.length > 0) {
-    const planet = planets.find((p) => p.mesh === hits[0].object);
+  return planets.find((p) => p.mesh === hits[0].object);
+}
+
+window.addEventListener('mousemove', (event) => {
+  const planet = planetAt(event);
+
+  if (planet) {
     label.textContent = planet.name;
     label.style.left = event.clientX + 15 + 'px';
     label.style.top = event.clientY + 15 + 'px';
@@ -155,6 +204,33 @@ window.addEventListener('mousemove', (event) => {
     label.style.display = 'none';
     document.body.style.cursor = 'default';
   }
+});
+
+window.addEventListener('mousedown', (event) => {
+  downX = event.clientX;
+  downY = event.clientY;
+});
+
+window.addEventListener('mouseup', (event) => {
+  if (event.target !== renderer.domElement) return;
+
+  const moved = Math.hypot(event.clientX - downX, event.clientY - downY);
+  if (moved > 5) return;
+
+  selectPlanet(planetAt(event));
+});
+
+function selectPlanet(planet) {
+  selectedPlanet = planet;
+  highlight.visible = planet !== null;
+  if (planet) highlight.scale.setScalar(planet.radius * 1.3 + 0.1);
+  updateInfo();
+}
+
+document.getElementById('info-close').addEventListener('click', () => selectPlanet(null));
+
+window.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') selectPlanet(null);
 });
 
 window.addEventListener('resize', () => {
@@ -183,7 +259,7 @@ function animate() {
     m.mesh.position.x = center.x + Math.cos(m.angle) * m.distance;
     m.mesh.position.z = center.z + Math.sin(m.angle) * m.distance;
   });
-
+  if (selectedPlanet) highlight.position.copy(selectedPlanet.mesh.position);
   controls.update();
   renderer.render(scene, camera);
 }

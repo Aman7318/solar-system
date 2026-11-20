@@ -13,10 +13,10 @@ Sizes, distances and orbital speeds are simplified so that everything fits on sc
 - Moons that orbit their planets: Earth's Moon, Jupiter's Galilean moons (Io, Europa, Ganymede, Callisto) and Saturn's Titan
 - Mouse camera controls: rotate, zoom and pan
 - Planet names shown when hovering over a planet
+- Click a planet to select it: a highlight appears around it and an info panel shows its diameter, distance from the Sun, orbital period and number of moons
 
 ## Planned
 
-- Selecting a planet to view basic information about it
 - Pause/resume and simulation speed controls
 
 ## Technologies
@@ -49,6 +49,8 @@ The project needs to be served over a local web server, because browsers block l
 | Zoom | Mouse wheel |
 | Pan | Right mouse button + drag |
 | Planet name | Hover over a planet |
+| Select a planet | Left click on a planet |
+| Clear selection | Click empty space, the Close button, or press Escape |
 
 ## Project structure
 
@@ -72,3 +74,4 @@ Every change is run and tested in the browser, and I adjust the results as neede
 ## Credits
 
 Planet and Sun textures are from [Solar System Scope](https://www.solarsystemscope.com/textures/) and are licensed under [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/). The moons of Jupiter and Saturn use plain colors approximating their real appearance.
+Planet facts come from NASA planetary fact sheets, and moon counts from NASA/JPL's list of officially recognized moons (they change as new moons are confirmed).
